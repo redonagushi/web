@@ -1,0 +1,68 @@
+/* ===== Animations (shared) ===== */
+@media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; scroll-behavior:auto !important; }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); filter: blur(6px); }
+    to   { opacity: 1; transform: translateY(0);  filter: blur(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes floaty {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-4px); }
+    100% { transform: translateY(0); }
+}
+
+/* page enter */
+body{
+    animation: fadeIn .35s ease-out both;
+}
+
+/* apply to common blocks */
+.card, .top, .main, .avatar-card, .form-grid, .side{
+    animation: fadeUp .45s ease-out both;
+}
+
+/* stagger helpers */
+.anim-1{ animation-delay: .03s; }
+.anim-2{ animation-delay: .07s; }
+.anim-3{ animation-delay: .11s; }
+.anim-4{ animation-delay: .15s; }
+.anim-5{ animation-delay: .19s; }
+
+input, button, a.btn-ghost, .btn, .badge{
+    transition: transform .14s ease, filter .2s ease, box-shadow .2s ease;
+}
+
+input:hover{
+    filter: brightness(1.03);
+}
+input:focus{
+    transform: translateY(-1px);
+}
+
+.btn:hover, .btn-ghost:hover{
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+    box-shadow: 0 14px 30px rgba(0,0,0,.25);
+}
+.btn:active, .btn-ghost:active{
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* subtle animated logo */
+.logo{
+    animation: floaty 2.6s ease-in-out infinite;
+}
+
+/* alerts pop-in */
+.alert.err, .alert.ok{
+    animation: fadeUp .25s ease-out both;
+}

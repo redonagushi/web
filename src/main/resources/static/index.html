@@ -1,0 +1,114 @@
+<!--Homepage / entry (mund të jetë login ose landing).-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/auth.css"/>
+    <link rel="stylesheet" href="/css/anim.css"/>
+    <link rel="stylesheet" href="/css/bg-net.css"/>
+
+
+</head>
+<body>
+
+<canvas id="bgParticles" class="bg-net"></canvas>
+
+<div class="auth-wrap">
+
+    <!-- Left: Login card -->
+    <div class="card anim-1">
+    <div class="card-header">
+            <div class="brand">
+                <div class="logo">P</div>
+                <div>
+                    <h1>Platform</h1>
+                    <p>Login me Email ose Nr Tel (JWT)</p>
+                </div>
+            </div>
+            <span class="badge">AUTH</span>
+        </div>
+
+        <div class="card-body">
+            <div class="form-title">Login</div>
+            <div class="form-sub">Shkruaj të dhënat dhe vazhdo te profili / admin.</div>
+
+            <form id="loginForm">
+                <div class="field">
+                    <label for="emailOrPhone">Email ose Nr Tel</label>
+                    <input id="emailOrPhone" placeholder="p.sh: admin@email.com ose +35569xxxxxxx" />
+                </div>
+
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" placeholder="Password" />
+                </div>
+
+                <button class="btn" type="submit">Login</button>
+            </form>
+
+            <div id="msg" class="alert"></div>
+
+            <div class="links">
+                S'ke account? <a href="/register.html">Register</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Info card -->
+    <div class="card side anim-2">
+
+    <span class="badge">Info</span>
+        <h3>Çfarë bën kjo platformë?</h3>
+        <ul>
+            <li>Register + Login (email/nr tel)</li>
+            <li>Profil: edit + upload photo</li>
+            <li>Admin: menaxhon userat (DataTable server-side)</li>
+            <li>JWT + Role-based access</li>
+        </ul>
+        <div class="small">© Platform • Login</div>
+    </div>
+
+</div>
+
+<script src="/js/api.js"></script>
+<script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const msg = document.getElementById("msg");
+        msg.className = "alert";
+        msg.style.display = "none";
+        msg.textContent = "";
+
+        try {
+            const res = await apiFetch("/api/auth/login", {
+                method: "POST",
+                body: JSON.stringify({
+                    emailOrPhone: document.getElementById("emailOrPhone").value.trim(),
+                    password: document.getElementById("password").value
+                })
+            });
+
+            if (!res || !res.token || !res.user) {
+                throw new Error("Përgjigje e pavlefshme nga serveri (mungon token/user)");
+            }
+
+            localStorage.setItem("token", res.token);
+            localStorage.setItem("user", JSON.stringify(res.user));
+
+            if (res.user.role === "ADMIN") window.location.href = "/admin.html";
+            else window.location.href = "/profile.html";
+
+        } catch (err) {
+            msg.style.display = "block";
+            msg.className = "alert err";
+            msg.textContent = err.message || "Login failed";
+            console.log(err);
+        }
+    });
+</script>
+<script src="/js/bg-net.js"></script>
+
+</body>
+</html>

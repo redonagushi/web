@@ -1,0 +1,199 @@
+<!--Forma e regjistrimit.-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/auth.css"/>
+    <link rel="stylesheet" href="/css/anim.css"/>
+    <link rel="stylesheet" href="/css/bg-net.css"/>
+</head>
+<body>
+
+<canvas id="bgParticles" class="bg-net"></canvas>
+
+<div class="auth-wrap">
+
+    <!-- Left: Register card -->
+    <div class="card anim-1">
+
+        <div class="card-header">
+            <div class="brand">
+                <div class="logo">P</div>
+                <div>
+                    <h1>Platform</h1>
+                    <p>Krijo llogari (validim + JWT)</p>
+                </div>
+            </div>
+            <span class="badge">REGISTER</span>
+        </div>
+
+        <div class="card-body">
+            <div class="form-title">Register</div>
+            <div class="form-sub">Plotëso të dhënat. Password duhet të jetë i fortë.</div>
+
+            <form id="registerForm">
+
+                <div class="row">
+                    <div class="field">
+                        <label for="emri">Emri</label>
+                        <input id="emri" placeholder="p.sh: Redon" />
+                    </div>
+                    <div class="field">
+                        <label for="atesia">Atësia</label>
+                        <input id="atesia" placeholder="p.sh: Hysni" />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="mbiemri">Mbiemri</label>
+                    <input id="mbiemri" placeholder="p.sh: Agushi" />
+                </div>
+
+                <div class="field">
+                    <label for="nrTel">Nr Tel</label>
+                    <input id="nrTel" type="text" placeholder="+35569xxxxxxx" />
+                </div>
+
+                <div class="field">
+                    <label for="datelindja">Datëlindja</label>
+                    <input id="datelindja" type="date" />
+                </div>
+
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input id="email" placeholder="email@example.com" />
+                </div>
+
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" placeholder="Min 8, 1 e madhe, 1 e vogël, 1 numër, 1 special" />
+                </div>
+
+                <div class="field">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input id="confirmPassword" type="password" placeholder="Confirm Password" />
+                </div>
+
+                <button class="btn" type="submit">Register</button>
+            </form>
+
+            <div id="msg" class="alert"></div>
+            <div id="ok" class="alert"></div>
+
+            <div class="links">
+                Ke account? <a href="/index.html">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Info card -->
+    <div class="card side">
+        <span class="badge">Kërkesat</span>
+        <h3>Validime</h3>
+        <ul>
+            <li>Emri/Atësia/Mbiemri: vetëm shkronja, max 20</li>
+            <li>Nr Tel: +35569xxxxxxx</li>
+            <li>Datëlindja: datë</li>
+            <li>Email: format email</li>
+            <li>Password: min 8, 1 e madhe, 1 e vogël, 1 numër, 1 special (@#$%!)</li>
+        </ul>
+        <div class="small">© Platform • Register</div>
+    </div>
+
+</div>
+
+<script src="/js/api.js"></script>
+<script>
+    const nameRe = /^[A-Za-z]{1,20}$/;
+    const phoneRe = /^\+35569\d{7}$/;
+    const passRe = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%!]).{8,}$/;
+
+    const emriEl = document.getElementById("emri");
+    const atesiaEl = document.getElementById("atesia");
+    const mbiemriEl = document.getElementById("mbiemri");
+    const nrTelEl = document.getElementById("nrTel");
+    const datelindjaEl = document.getElementById("datelindja");
+    const emailEl = document.getElementById("email");
+    const passEl = document.getElementById("password");
+    const confEl = document.getElementById("confirmPassword");
+
+    function showErr(t){
+        const msg = document.getElementById("msg");
+        const ok = document.getElementById("ok");
+        ok.style.display = "none";
+        ok.className = "alert";
+        msg.style.display = "block";
+        msg.className = "alert err";
+        msg.textContent = t;
+    }
+    function showOk(t){
+        const msg = document.getElementById("msg");
+        const ok = document.getElementById("ok");
+        msg.style.display = "none";
+        msg.className = "alert";
+        ok.style.display = "block";
+        ok.className = "alert ok";
+        ok.textContent = t;
+    }
+
+    function validate() {
+        const emri = emriEl.value.trim();
+        const atesia = atesiaEl.value.trim();
+        const mbiemri = mbiemriEl.value.trim();
+        const nrTel = nrTelEl.value.trim();
+        const datelindja = datelindjaEl.value;
+        const email = emailEl.value.trim();
+        const password = passEl.value;
+        const confirmPassword = confEl.value;
+
+        if (!nameRe.test(emri)) return "Emri: vetëm shkronja, max 20";
+        if (!nameRe.test(atesia)) return "Atesia: vetëm shkronja, max 20";
+        if (!nameRe.test(mbiemri)) return "Mbiemri: vetëm shkronja, max 20";
+        if (!phoneRe.test(nrTel)) return "NrTel duhet: +35569xxxxxxx";
+        if (!datelindja) return "Vendos datëlindjen";
+        if (!email.includes("@")) return "Email jo i saktë";
+        if (!passRe.test(password)) return "Password: min 8, 1 e madhe, 1 e vogël, 1 numër, 1 special (@#$%!)";
+        if (password !== confirmPassword) return "Password nuk përputhet";
+        return null;
+    }
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        document.getElementById("msg").style.display = "none";
+        document.getElementById("ok").style.display = "none";
+
+        const err = validate();
+        if (err) { showErr(err); return; }
+
+        try {
+            await apiFetch("/api/auth/register", {
+                method: "POST",
+                body: JSON.stringify({
+                    emri: emriEl.value.trim(),
+                    atesia: atesiaEl.value.trim(),
+                    mbiemri: mbiemriEl.value.trim(),
+                    nrTel: nrTelEl.value.trim(),
+                    datelindja: datelindjaEl.value,
+                    email: emailEl.value.trim(),
+                    password: passEl.value,
+                    confirmPassword: confEl.value
+                })
+            });
+
+            showOk("U regjistrua me sukses. Tani Login.");
+            setTimeout(() => window.location.href = "/index.html", 700);
+
+        } catch (e) {
+            showErr(e.message || "Register failed");
+            console.log(e);
+        }
+    });
+</script>
+
+<script src="/js/bg-net.js"></script>
+<script src="/js/auth.js"></script>
+
+</body>
+</html>

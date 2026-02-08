@@ -1,0 +1,11 @@
+body { font-family: Arial, sans-serif; margin: 30px; }
+.container { max-width: 520px; margin: auto; }
+input, button { width: 100%; padding: 10px; margin: 6px 0; }
+button { cursor: pointer; }
+.row { display: flex; gap: 10px; }
+.row > div { flex: 1; }
+.topbar { display:flex; justify-content: space-between; align-items:center; margin-bottom: 16px; }
+a { text-decoration:none; }
+.error { color: #b00020; margin-top: 8px; }
+.ok { color: #0a7a0a; margin-top: 8px; }
+img.avatar { width: 110px; height: 110px; object-fit: cover; border-radius: 10px; border: 1px solid #ccc; }

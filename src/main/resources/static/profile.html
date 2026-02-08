@@ -1,0 +1,104 @@
+<!--Profili i user-it (shfaq/ndrysho të dhënat).-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="/css/profile.css"/>
+    <link rel="stylesheet" href="/css/anim.css"/>
+    <link rel="stylesheet" href="/css/bg-net.css"/>
+
+
+</head>
+<body>
+
+<canvas id="bgParticles" class="bg-net"></canvas>
+
+<div class="page">
+
+    <!-- Top bar -->
+    <div class="top card anim-1">
+
+    <div class="brand">
+            <div class="logo">P</div>
+            <div>
+                <h1>Profile</h1>
+                <p>Menaxho të dhënat + foto (JWT)</p>
+            </div>
+        </div>
+
+        <div class="right">
+            <span id="roleBadge" class="badge">USER</span>
+            <a class="btn-ghost" href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main card -->
+    <div class="card main anim-2">
+
+    <div class="main-head">
+            <div>
+                <h2>Profili im</h2>
+                <p>Ndrysho të dhënat dhe ruaji.</p>
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- Avatar + upload -->
+            <div class="avatar-card">
+                <img id="photo" class="avatar" src="" alt="photo"/>
+                <div class="upload">
+                    <input id="file" type="file" accept="image/*"/>
+                    <button id="btnUpload" class="btn">Upload Photo</button>
+                    <div class="hint">Formati: JPG/PNG • Ruhet te /uploads</div>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <div class="form-grid">
+                <div class="field">
+                    <label>Emri</label>
+                    <input id="emri" placeholder="Emri"/>
+                </div>
+                <div class="field">
+                    <label>Atësia</label>
+                    <input id="atesia" placeholder="Atësia"/>
+                </div>
+
+                <div class="field span2">
+                    <label>Mbiemri</label>
+                    <input id="mbiemri" placeholder="Mbiemri"/>
+                </div>
+
+                <div class="field span2">
+                    <label>Nr Tel</label>
+                    <input id="nrTel" type="text" placeholder="+35569xxxxxxx"/>
+                </div>
+
+                <div class="field span2">
+                    <label>Datëlindja</label>
+                    <input id="datelindja" type="date"/>
+                </div>
+
+                <div class="actions span2">
+                    <button id="btnSave" class="btn">Ruaj Ndryshimet</button>
+                </div>
+
+                <div id="msg" class="alert err span2" style="display:none;"></div>
+                <div id="ok" class="alert ok span2" style="display:none;"></div>
+            </div>
+
+        </div>
+
+        <div class="footer">© Platform • Profile</div>
+    </div>
+
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/profile.js"></script>
+<script src="/js/bg-net.js"></script>
+
+</body>
+</html>

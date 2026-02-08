@@ -1,0 +1,89 @@
+<!--Admin panel (tabela e user-ave).-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin - Users</title>
+
+    <link rel="stylesheet" href="/css/bg-net.css"/>
+
+    <link rel="stylesheet" href="/css/admin.css"/>
+    <link rel="stylesheet" href="/css/anim.css"/>
+
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+</head>
+
+<body>
+
+<canvas id="bgParticles" class="bg-net"></canvas>
+
+<div class="page">
+    <header class="header">
+        <div class="brand">
+            <div class="logo">A</div>
+            <div>
+                <div class="title">Admin Panel</div>
+                <div class="subtitle">Menaxho përdoruesit (Server-side DataTable)</div>
+            </div>
+        </div>
+
+        <div class="headerRight">
+            <div class="badge" id="adminInfo">ADMIN</div>
+            <button class="btn btn-ghost" onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <main class="card anim-2">
+
+    <div class="cardTop">
+            <div>
+                <h2>Përdoruesit</h2>
+                <p class="muted">Kërko, rendit, edito ose fshi përdoruesit.</p>
+            </div>
+
+            <div class="actions">
+                <button class="btn" id="btnReload">Reload</button>
+            </div>
+        </div>
+
+        <div class="tableWrap">
+            <table id="usersTable" class="display" style="width:100%">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>emri</th>
+                    <th>atesia</th>
+                    <th>mbiemri</th>
+                    <th>nrTel</th>
+                    <th>datelindja</th>
+                    <th>email</th>
+                    <th>role</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div class="msgs">
+            <div id="msg" class="msg msg-error" style="display:none"></div>
+            <div id="ok" class="msg msg-ok" style="display:none"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span class="muted">© Platform • Admin</span>
+    </footer>
+</div>
+
+<!-- libs (renditje e sigurt) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin.js"></script>
+<script src="/js/bg-net.js"></script>
+
+</body>
+</html>
