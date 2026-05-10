@@ -1,14 +1,85 @@
-<!--Homepage / entry (mund të jetë login ose landing).-->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Login</title>
+    <title>Platform – Home</title>
     <link rel="stylesheet" href="/css/auth.css"/>
     <link rel="stylesheet" href="/css/anim.css"/>
     <link rel="stylesheet" href="/css/bg-net.css"/>
+    <style>
+        .hub-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 14px;
+        }
+        @media (max-width: 500px) {
+            .hub-grid { grid-template-columns: 1fr; }
+        }
 
+        .nav-card {
+            display: block;
+            text-decoration: none;
+            padding: 18px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,.10);
+            background: rgba(2,6,18,.40);
+            color: #eaf0ff;
+            cursor: pointer;
+            transition: border-color .2s ease, background .2s ease, transform .1s ease;
+        }
+        .nav-card:hover {
+            border-color: rgba(80,120,255,.50);
+            background: rgba(20,40,90,.50);
+            transform: translateY(-2px);
+        }
+        .nav-card:active { transform: translateY(0); }
 
+        .nav-card.green:hover {
+            border-color: rgba(0,220,160,.45);
+            background: rgba(0,60,45,.45);
+        }
+        .nav-card.red:hover {
+            border-color: rgba(255,60,80,.45);
+            background: rgba(80,15,25,.45);
+        }
+        .nav-card.orange:hover {
+            border-color: rgba(255,160,50,.45);
+            background: rgba(80,45,10,.45);
+        }
+
+        .nav-icon { font-size: 26px; margin-bottom: 8px; }
+        .nav-title { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+        .nav-desc  { font-size: 12px; color: rgba(234,240,255,.55); }
+
+        .user-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: rgba(80,120,255,.08);
+            border: 1px solid rgba(80,120,255,.20);
+            margin-bottom: 4px;
+        }
+        .user-avatar-init {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(65,150,255,.8), rgba(0,255,200,.6));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 16px; color: #041024;
+            flex-shrink: 0;
+        }
+        .user-avatar-img {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,.15);
+            flex-shrink: 0;
+        }
+        .user-name  { font-weight: 700; font-size: 15px; }
+        .user-email { font-size: 12px; color: rgba(234,240,255,.55); }
+    </style>
 </head>
 <body>
 
@@ -16,97 +87,131 @@
 
 <div class="auth-wrap">
 
-    <!-- Left: Login card -->
+    <!-- Karta kryesore me butona -->
     <div class="card anim-1">
-    <div class="card-header">
+        <div class="card-header">
             <div class="brand">
                 <div class="logo">P</div>
                 <div>
                     <h1>Platform</h1>
-                    <p>Login me Email ose Nr Tel (JWT)</p>
+                    <p>Zgjidhni një veprim</p>
                 </div>
             </div>
-            <span class="badge">AUTH</span>
+            <span class="badge" id="statusBadge">GUEST</span>
         </div>
 
         <div class="card-body">
-            <div class="form-title">Login</div>
-            <div class="form-sub">Shkruaj të dhënat dhe vazhdo te profili / admin.</div>
 
-            <form id="loginForm">
-                <div class="field">
-                    <label for="emailOrPhone">Email ose Nr Tel</label>
-                    <input id="emailOrPhone" placeholder="p.sh: admin@email.com ose +35569xxxxxxx" />
+            <!-- ═══ GUEST (jo i loguar) ═══ -->
+            <div id="guestSection">
+                <div class="form-title">Mirë se vini!</div>
+                <div class="form-sub">Hyr në llogari ose krijo një të re për të vazhduar.</div>
+
+                <div class="hub-grid">
+                    <a href="/login.html" class="nav-card green">
+                        <div class="nav-icon">🔑</div>
+                        <div class="nav-title">Login</div>
+                        <div class="nav-desc">Hyr me email ose nr tel</div>
+                    </a>
+                    <a href="/register.html" class="nav-card">
+                        <div class="nav-icon">📝</div>
+                        <div class="nav-title">Signup</div>
+                        <div class="nav-desc">Krijo llogari të re</div>
+                    </a>
                 </div>
-
-                <div class="field">
-                    <label for="password">Password</label>
-                    <input id="password" type="password" placeholder="Password" />
-                </div>
-
-                <button class="btn" type="submit">Login</button>
-            </form>
-
-            <div id="msg" class="alert"></div>
-
-            <div class="links">
-                S'ke account? <a href="/register.html">Register</a>
             </div>
+
+            <!-- ═══ LOGUAR ═══ -->
+            <div id="authSection" style="display:none;">
+
+                <div class="user-bar">
+                    <div id="avatarInit" class="user-avatar-init"></div>
+                    <img  id="avatarImg"  class="user-avatar-img" style="display:none;" alt="foto"/>
+                    <div>
+                        <div class="user-name"  id="userName"></div>
+                        <div class="user-email" id="userEmail"></div>
+                    </div>
+                </div>
+
+                <div class="hub-grid">
+
+                    <a href="/login.html" class="nav-card green" id="loginCard" style="display:none;">
+                        <div class="nav-icon">🔑</div>
+                        <div class="nav-title">Login</div>
+                        <div class="nav-desc">Hyr në llogari</div>
+                    </a>
+
+                    <a href="/profile.html" class="nav-card">
+                        <div class="nav-icon">👤</div>
+                        <div class="nav-title">Profili</div>
+                        <div class="nav-desc">Shiko dhe ndrysho të dhënat</div>
+                    </a>
+
+                    <a href="/profile.html" class="nav-card orange">
+                        <div class="nav-icon">📷</div>
+                        <div class="nav-title">Ndrysho Foton</div>
+                        <div class="nav-desc">Upload foto profili</div>
+                    </a>
+
+                    <a href="/admin.html" class="nav-card" id="adminCard" style="display:none;">
+                        <div class="nav-icon">⚙️</div>
+                        <div class="nav-title">Admin Panel</div>
+                        <div class="nav-desc">Menaxho përdoruesit</div>
+                    </a>
+
+                    <a href="#" class="nav-card red" onclick="logout(); return false;">
+                        <div class="nav-icon">🚪</div>
+                        <div class="nav-title">Logout</div>
+                        <div class="nav-desc">Dil nga llogaria</div>
+                    </a>
+
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- Right: Info card -->
+    <!-- Karta info -->
     <div class="card side anim-2">
-
-    <span class="badge">Info</span>
-        <h3>Çfarë bën kjo platformë?</h3>
+        <span class="badge">Info</span>
+        <h3>Çfarë ofron kjo platformë?</h3>
         <ul>
-            <li>Register + Login (email/nr tel)</li>
-            <li>Profil: edit + upload photo</li>
-            <li>Admin: menaxhon userat (DataTable server-side)</li>
-            <li>JWT + Role-based access</li>
+            <li>Register + Login (email / nr tel)</li>
+            <li>Profil: edit të dhënat</li>
+            <li>Upload &amp; ndrysho foton e profilit</li>
+            <li>Admin panel: menaxho userat</li>
+            <li>JWT + Role-based access (USER / ADMIN)</li>
         </ul>
-        <div class="small">© Platform • Login</div>
+        <div class="small">© Platform • Home</div>
     </div>
 
 </div>
 
 <script src="/js/api.js"></script>
 <script>
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
+    const user  = getUser();
+    const token = getToken();
 
-        const msg = document.getElementById("msg");
-        msg.className = "alert";
-        msg.style.display = "none";
-        msg.textContent = "";
+    if (user && token) {
+        document.getElementById("guestSection").style.display  = "none";
+        document.getElementById("authSection").style.display   = "block";
+        document.getElementById("statusBadge").textContent     = user.role || "USER";
+        document.getElementById("userName").textContent        = ((user.emri || "") + " " + (user.mbiemri || "")).trim() || user.email;
+        document.getElementById("userEmail").textContent       = user.email || "";
 
-        try {
-            const res = await apiFetch("/api/auth/login", {
-                method: "POST",
-                body: JSON.stringify({
-                    emailOrPhone: document.getElementById("emailOrPhone").value.trim(),
-                    password: document.getElementById("password").value
-                })
-            });
+        const initials = ((user.emri || "?")[0] + (user.mbiemri || "?")[0]).toUpperCase();
+        document.getElementById("avatarInit").textContent = initials;
 
-            if (!res || !res.token || !res.user) {
-                throw new Error("Përgjigje e pavlefshme nga serveri (mungon token/user)");
-            }
-
-            localStorage.setItem("token", res.token);
-            localStorage.setItem("user", JSON.stringify(res.user));
-
-            if (res.user.role === "ADMIN") window.location.href = "/admin.html";
-            else window.location.href = "/profile.html";
-
-        } catch (err) {
-            msg.style.display = "block";
-            msg.className = "alert err";
-            msg.textContent = err.message || "Login failed";
-            console.log(err);
+        if (user.photoUrl) {
+            document.getElementById("avatarImg").src          = user.photoUrl;
+            document.getElementById("avatarImg").style.display = "block";
+            document.getElementById("avatarInit").style.display = "none";
         }
-    });
+
+        if (user.role === "ADMIN") {
+            document.getElementById("adminCard").style.display = "block";
+        }
+    }
 </script>
 <script src="/js/bg-net.js"></script>
 

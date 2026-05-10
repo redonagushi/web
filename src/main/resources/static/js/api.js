@@ -68,5 +68,5 @@ async function apiFetch(path, options = {}) {
 
 function logout() {
     clearAuth();
-    window.location.href = "/index.html";
+    window.location.href = "/index.html"; // ridrejton te Hub
 }

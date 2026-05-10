@@ -16,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +27,19 @@ public class AdminService {
     private final UserRepository userRepository;
 
     public UserResponse updateUser(Long id, @Valid UpdateUserRequest req) {
-        User user = userRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Përdoruesi nuk u gjet"));
+
+        if (user.getRole() == Role.ADMIN) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nuk mund të modifikosh një llogari ADMIN");
+        }
+
+        Role newRole;
+        try {
+            newRole = Role.valueOf(req.getRole());
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role i pavlefshëm: " + req.getRole());
+        }
 
         user.setEmri(req.getEmri());
         user.setAtesia(req.getAtesia());
@@ -33,12 +47,19 @@ public class AdminService {
         user.setNrTel(req.getNrTel());
         user.setDatelindja(req.getDatelindja());
         user.setEmail(req.getEmail());
-        user.setRole(Role.valueOf(req.getRole()));
+        user.setRole(newRole);
 
         return UserResponse.from(userRepository.save(user));
     }
 
     public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Përdoruesi nuk u gjet"));
+
+        if (user.getRole() == Role.ADMIN) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Nuk mund të fshish një llogari ADMIN");
+        }
+
         userRepository.deleteById(id);
     }
 

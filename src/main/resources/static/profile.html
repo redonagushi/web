@@ -29,6 +29,7 @@
 
         <div class="right">
             <span id="roleBadge" class="badge">USER</span>
+            <a class="btn-ghost" href="/index.html">Home</a>
             <a class="btn-ghost" href="#" onclick="logout()">Logout</a>
         </div>
     </div>
@@ -97,6 +98,9 @@
 </div>
 
 <script src="/js/api.js"></script>
+<script>
+    if (!getToken()) { window.location.href = "/login.html"; }
+</script>
 <script src="/js/profile.js"></script>
 <script src="/js/bg-net.js"></script>
 

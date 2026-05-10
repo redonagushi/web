@@ -1,15 +1,15 @@
 //Operacionet e user-it (profile update, etj.).
 package com.example.platform.service;
 
-import com.example.platform.dto.RegisterRequest;
 import com.example.platform.dto.UpdateProfileRequest;
 import com.example.platform.dto.UserResponse;
 import com.example.platform.entity.User;
 import com.example.platform.repository.UserRepository;
-import com.example.platform.service.CurrentUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.file.*;
 
@@ -26,6 +26,10 @@ public class UserService {
 
     public UserResponse updateProfile(UpdateProfileRequest req) {
         User user = currentUserService.getCurrentUser();
+
+        if (!user.getNrTel().equals(req.getNrTel()) && userRepository.existsByNrTel(req.getNrTel())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ky numër telefoni ekziston tashmë");
+        }
 
         user.setEmri(req.getEmri());
         user.setAtesia(req.getAtesia());

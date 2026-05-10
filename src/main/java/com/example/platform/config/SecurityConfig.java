@@ -52,7 +52,7 @@ public class SecurityConfig {
 
                 // ✅ faqet statike
                 .requestMatchers(
-                        "/", "/index.html", "/register.html", "/profile.html", "/admin.html",
+                        "/", "/index.html", "/login.html", "/register.html", "/profile.html", "/admin.html",
                         "/error", "/favicon.ico"
                 ).permitAll()
 

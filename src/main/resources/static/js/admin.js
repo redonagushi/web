@@ -71,7 +71,7 @@ $(document).ready(function () {
                         return `<div style="opacity:.5; font-style:italic;">Admin locked</div>`;
                     }
 
-                    const esc = (s) => (s ?? "").toString().replaceAll('"', '\\"');
+                    const esc = (s) => (s ?? "").toString().replaceAll("\\", "\\\\").replaceAll("'", "\\'").replaceAll('"', '\\"');
 
                     return `
             <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
